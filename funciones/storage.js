@@ -36,9 +36,18 @@ class Storage {
     await this.loadFile();
     let array = this.products;
     console.log(array);
-    console.log(url);
+    console.log(url, "url");
+    const filePath = Date.now() + ".jpg";
+    const writePath = "./public/images/" + filePath;
+
+    fs.writeFile(writePath, url);
     const maxIdConstant = (await this.maxIdItems()) + 1 || 0;
-    const objeto = { title, url, price, id: maxIdConstant };
+    const objeto = {
+      title,
+      url: "./images/" + filePath,
+      price,
+      id: maxIdConstant,
+    };
     array.push(objeto);
     this.products = array;
     console.log("nuevo", this.products);

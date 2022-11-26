@@ -3,7 +3,8 @@ const multer = require("multer");
 const routes = express.Router();
 const Store = require("../funciones/storage");
 const colors = require("colors");
-
+const { writeFile } = require("fs/promises");
+const fs = require("fs").promises;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/images");
@@ -28,7 +29,18 @@ routes.post("/addproduct", upload.single("url"), async (req, res) => {
 routes.get("/", async (req, res) => {
   const response = await dbManager.getAll(this.version);
   const io = req.app.get("socketio");
-  io.on("connection", (socket) => console.log("WebSockets Conected".blue));
+  io.on("connection", (socket) => {
+    console.log("WebSockets Conected".blue);
+    socket.on("addProduct", async (socket) => {
+      await dbManager.addProduct(
+        socket.title,
+        socket.url,
+        socket.price,
+        this.version
+      );
+      io.emit("completed", { completed: true });
+    });
+  });
   res.render("home", { products: response, contenido: response.length > 0 });
 });
 module.exports = routes;
