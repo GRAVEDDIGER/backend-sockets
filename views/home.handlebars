@@ -1,11 +1,4 @@
-<main>
-  <form class="addProductForm" id="addProductForm" action="#">
-    <input type="text" placeholder="Titulo" class="inputBox" name="title" />
-    <input type="file" placeholder="URL" class="inputBox" name="url" />
-    <input type="text" placeholder="Price" class="inputBox" name="price" />
-    <button class="enviar" id="submitButton">Agregar Producto</button>
-    <a href="/getProducts" class="enviar" id="productsView">Ver Productos</a>
-
-  </form>
+<main class="mainView">
+{{>home}}
+{{>view}}
 </main>
-<script src="./main.js"></script>
