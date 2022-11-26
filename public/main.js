@@ -1,4 +1,3 @@
-const usuario = prompt("Nombre de usuario");
 const addProductForm = document.getElementById("addProductForm");
 const handleSubmit = async (e, form) => {
   e.preventDefault();

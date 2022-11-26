@@ -118,13 +118,13 @@ align-items: center;
 }
 
 .chatBox{
-    width: 40%;
-    max-width: 300px;
-    min-width: 200px;
+    width: auto;
+    width: 800px;
     border: 3px solid yellow;
     height: 400px;
     margin:2rem;
     display: flex;
+    padding: 1rem;
 flex-direction: column;
 margin-bottom: 2rem;
 }
@@ -162,3 +162,40 @@ height: inherit;
     font-weight: bold;
 }
 .downBox>button:hover{background-color: #d5d5d5;}
+
+.user{
+    font-weight: bold;
+    color:blue;
+    margin: 0 8px;
+}
+.time{
+    color:brown;
+    margin: 0 8px;
+
+}
+.mensaje{
+    color:green;
+    font-style: italic;
+    margin: 0 8px;
+
+}
+.textContainerClient{
+    display: flex;
+    flex-direction: row;
+    margin:1rem;
+    justify-content: start;
+    width: 100%;
+    background-color: floralwhite;
+    padding: 1rem;
+}
+.textContainerServer{
+    display: flex;
+    flex-direction: row;
+    margin:1rem;
+    justify-content: end;
+    width: 100%;
+    margin-right: 1rem;
+    padding:1rem;
+    background-color: aquamarine;
+    padding: 1rem;
+}
