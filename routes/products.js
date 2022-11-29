@@ -6,8 +6,7 @@ const colors = require("colors");
 const { writeFile } = require("fs/promises");
 const fs = require("fs").promises;
 const chatClass = require("../funciones/chatStore");
-const chatDb = new chatClass("./chat.json");
-
+const chatDb = new chatClass("./public/chat.json");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/images");
@@ -33,6 +32,7 @@ let prevId = { timeStamp: 0 };
 routes.get("/", async (req, res) => {
   const response = await dbManager.getAll(this.version);
   const io = req.app.get("socketio");
+  if (!io) io.connect();
   io.on("connection", (socket) => {
     console.log("WebSockets Conected".blue);
     socket.on("addProduct", async (socket) => {
@@ -47,9 +47,8 @@ routes.get("/", async (req, res) => {
     socket.on("clientMessage", (datos) => {
       if (prevId.timeStamp !== datos.timeStamp) {
         console.log("brodcast", datos, socket.id);
-        fs.readFile("./chat.json", "utf-8").then((res) => console.log(res));
-        // chatDb.addItem(datos);
         socket.broadcast.emit("serverMessage", datos);
+        chatDb.addItem(datos);
         prevId = datos;
       }
     });

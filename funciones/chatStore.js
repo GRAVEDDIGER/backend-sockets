@@ -1,32 +1,39 @@
-const fs = require("fs").promises;
-const fsSync = require("fs");
+const fs = require("fs");
 class ChatHistory {
   constructor(file) {
     this.chat = [];
     this.file = file;
   }
-  readData() {
-    if (fsSync.existsSync(this.file)) {
-      fs.readFile(this.file).then((res) => {
-        this.chat = res;
-
-        console.log(res, "response");
-      });
-    }
+  async readData() {
+    if (fs.existsSync(this.file)) {
+      this.chat = await JSON.parse(
+        await fs.promises.readFile(this.file, "utf-8")
+      );
+      return this.chat;
+    } else return false;
   }
-  lastId(datos) {
-    return Math.max(datos.map((item) => item.id)) || 0;
+  lastId() {
+    if (this.chat.length > 0) {
+      const resultado =
+        Math.max(...this.chat.map((chatItem) => parseInt(chatItem.id))) || 0;
+      return resultado;
+    } else return 0;
   }
   saveFile() {
-    fs.writeFile(this.file, this.chat, "utf-8");
+    return fs.promises.writeFile(this.file, JSON.stringify(this.chat), "utf-8");
   }
-  addItem() {
-    this.readData().then((res) => {
-      nextId = this.lastId(res) + 1;
-      objDatos = { ...res, nextId };
-      this.chat.push(objDatos);
-      this.saveFile();
-    });
+  async addItem(item) {
+    const datos = await this.readData();
+    let objeto;
+    console.log(datos, "datos");
+    if (datos.length > 0) {
+      const id = parseInt(this.lastId()) + 1;
+      objeto = { ...item, id: id };
+    } else {
+      objeto = { ...item, id: 0 };
+    }
+    this.chat.push(objeto);
+    this.saveFile();
   }
 }
 
